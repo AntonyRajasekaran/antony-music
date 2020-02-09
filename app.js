@@ -1,17 +1,18 @@
-import express from 'express';
+const express = require('express');
 const app = express();
-import morgan from "morgan";
-import { urlencoded, json } from "body-parser";
-import { connect, Promise } from 'mongoose';
-import albumRoutes from './api/routes/albums';
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
+const mongoose = require('mongoose');
+const albumRoutes = require('./api/routes/albums');
+const artistRoutes = require("./api/routes/artists");
 const uri = "mongodb+srv://antony-music:EKyavLAq3pqZ7ObE@cluster0-ih4kd.mongodb.net/test?retryWrites=true&w=majority";
 
-connect(uri);
-Promise = global.Promise;
+mongoose.connect(uri);
+mongoose.Promise = global.Promise;
 
 app.use(morgan("dev"));
-app.use(urlencoded({ extended: false }));
-app.use(json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -27,7 +28,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/albums', albumRoutes);
-
+app.use('/artists', artistRoutes);
 
 app.use((req, res, next) => {
     const error = new Error("Not found");
@@ -44,4 +45,4 @@ app.use((error, req, res, next) => {
     });
 });
 
-export default app;
+module.exports = app;
