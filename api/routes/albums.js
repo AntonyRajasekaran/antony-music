@@ -3,7 +3,7 @@ const router = express.Router();
 
 const AlbumsController = require('../controllers/albums');
 
-// Handle incoming GET requests to /orders
+// Handle incoming GET requests to /albums
 router.get("/", AlbumsController.albums_get_all);
 
 router.post("/", AlbumsController.albums_create_album);
